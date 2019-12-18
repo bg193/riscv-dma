@@ -125,7 +125,7 @@ class DecoupledTLB(entries: Int)(implicit edge: TLEdgeOut, p: Parameters) extend
   val resp = Reg(new TLBResp)
   val tlb = Module(new TLB(false, lgMaxSize, TLBConfig(entries)))
 
-  val s_idle :: s_tlb_req :: s_tlb_resp :: s_done :: Nil = Enum(Bits(), 4)
+  val s_idle :: s_tlb_req :: s_tlb_resp :: s_done :: Nil = Enum(4)
   val state = RegInit(s_idle)
 
   when (io.req.fire()) {
@@ -250,8 +250,8 @@ class DmaFrontend(implicit p: Parameters) extends CoreModule()(p)
   val state = RegInit(s_idle)
 
   // lower bit is for src, higher bit is for dst
-  val to_translate = Reg(UInt(2.W), init = 0.U)
-  val tlb_sent = Reg(UInt(2.W), init = ~0.U(2.W))
+  val to_translate = RegInit(UInt(2.W), 0.U)
+  val tlb_sent = RegInit(UInt(2.W), ~0.U(2.W))
   val tlb_to_send = to_translate & ~tlb_sent
   val resp_status = Reg(UInt(dmaStatusBits.W))
   val fault_vpn = Reg(UInt(vpnBits.W))

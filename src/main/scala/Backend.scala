@@ -246,7 +246,7 @@ class DmaTrackerPrefetcherModule(outer: DmaTrackerPrefetcher)
   val bytes_left = Reg(UInt(addrBits.W))
 
   val prefetch_type = Reg(UInt(TLHints.width.W))
-  val prefetch_busy = Reg(UInt(nDmaTrackerMemXacts.W), init = 0.U)
+  val prefetch_busy = RegInit(UInt(nDmaTrackerMemXacts.W), 0.U)
   val prefetch_id_onehot = PriorityEncoderOH(~prefetch_busy)
   val prefetch_id = OHToUInt(prefetch_id_onehot)
 
@@ -433,7 +433,7 @@ class DmaTrackerWriterModule(outer: DmaTrackerWriter)
   val last_data = Reg(UInt(dataBits.W))
   val last_bytes_val = Reg(UInt((log2Up(dataBytes) + 1).W))
 
-  val put_busy = Reg(UInt(nDmaTrackerMemXacts.W), init = 0.U)
+  val put_busy = RegInit(UInt(nDmaTrackerMemXacts.W), 0.U)
   val put_id_onehot = PriorityEncoderOH(~put_busy)
   val put_id = OHToUInt(put_id_onehot)
   val put_block_id = RegEnable(put_id, tl.a.fire() && edge.first(tl.a))

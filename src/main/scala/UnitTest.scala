@@ -33,7 +33,7 @@ class DmaBackendTestDriverModule(outer: DmaBackendTestDriver)
 
   val dataBits = outer.wordBytes * 8
   val lgSize = log2Ceil(outer.wordBytes)
-  val expectedData = Vec(outer.testWords.map(w => w.U(dataBits.W)))
+  val expectedData = VecInit(outer.testWords.map(w => w.U(dataBits.W)))
   val length = expectedData.size * outer.wordBytes
 
   io.dma.req.valid := state === s_dma_req
